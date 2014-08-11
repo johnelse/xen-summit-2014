@@ -26,6 +26,140 @@
                     <p>john.else@citrix.com</p>
                 </section>
 
+                <section>
+                    <h2>XAPI project</h2>
+                    <ul>
+                        <li class="fragment">XenAPI</li>
+                        <li class="fragment">XAPI</li>
+                        <li class="fragment">XenServer toolstack</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Performance data</h2>
+                    <ul>
+                        <li class="fragment">Numeric</li>
+                        <li class="fragment">Changes regularly</li>
+                        <li class="fragment">If we sometimes lose a sample - that's OK</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Interdomain performance data</h2>
+                    <ul>
+                        <li class="fragment">Currently one lone metric - guest free memory</li>
+                        <li class="fragment">Even this has been a bottleneck!</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Improvements so far</h2>
+                    <ul>
+                        <li class="fragment">XAPI disaggregation: rrdd, networkd and xenopsd</li>
+                        <li class="fragment">Watch xenstore instead of polling</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>What next?</h2>
+                    <ul>
+                        <li class="fragment">Take xenstore out of the data path</li>
+                        <li class="fragment">Create a generic API</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - dom0</h2>
+                    <img src="images/dom0_plugin.png">
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - interdomain</h2>
+                    <img src="images/domU_plugin.png">
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - protocol v1</h2>
+                    <pre><code style="font-size:28px">
+header                          10 bytes
+data length (ASCII)             8  bytes
+md5sum (ASCII)                  32 bytes
+json data inc. timestamp        ?  bytes
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - protocol v1</h2>
+                    <pre><code>
+DATASOURCES
+00000a79
+6cc0472a94896d245dcea04a37c26474
+{
+  "timestamp": 1407715758,
+  "datasources": {
+    "io_throughput_read_9d0e83ec": {
+      "description": "Data read from the SR, in MiB/s",
+      "owner": "host",
+      "value": "0.55",
+      "value_type": "float",
+      "type": "absolute_to_rate",
+      "units": "MiB/s",
+      "min": "0.00",
+      "max": "inf"
+    }
+  }
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - protocol v2</h2>
+                    <ul>
+                        <li>Separate data from metadata</li>
+                        <li>Binary encode as much as possible</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - protocol v2</h2>
+                    <pre><code style="font-size:28px">
+header                          10    bytes
+data crc32                      4     bytes
+metadata crc32                  4     bytes
+datasource count (int32)        4     bytes
+timestamp (int64)               8     bytes
+datasource values               n * 8 bytes
+metadata length (int32)         4     bytes
+json metadata                   ?     bytes
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Demo</h2>
+                </section>
+
+                <section>
+                    <h2>Questions</h2>
+                </section>
+
+                <section>
+                    <h2>Further info</h2>
+                    <ul>
+                        <p>
+                            Code:
+                            <br>
+                            <a href="http://github.com/xapi-project/rrd-transport">http://github.com/xapi-project/rrd-transport</a>
+                        </p>
+                        <p>
+                            These slides:
+                            <br>
+                            <a href="http://johnelse.github.io/xen-summit-2014">http://johnelse.github.io/xen-summit-2014</a>
+                        </p>
+                        <p>IRC: #xen-api</p>
+                        <p>Email: john.else@citrix.com</p>
+                    </ul>
+                </section>
+
             </div>
 
         </div>
