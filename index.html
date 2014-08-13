@@ -28,10 +28,10 @@
 
                 <section>
                     <h2>XAPI project</h2>
-                    <ul>
-                        <li class="fragment">XenAPI</li>
-                        <li class="fragment">XAPI</li>
-                        <li class="fragment">XenServer toolstack</li>
+                    <ul class="fragment">
+                        <li>XenAPI</li>
+                        <li>XAPI</li>
+                        <li>XCP/XenServer toolstack</li>
                     </ul>
                 </section>
 
@@ -47,24 +47,35 @@
                 <section>
                     <h2>Interdomain performance data</h2>
                     <ul>
-                        <li class="fragment">Currently one lone metric - guest free memory</li>
-                        <li class="fragment">Even this has been a bottleneck!</li>
+                        <li class="fragment">Currently one metric per domU: free memory</li>
+                        <li class="fragment">Transmitted via xenstore</li>
+                        <li class="fragment">Even this has been enough to cause performance problems!</li>
                     </ul>
                 </section>
 
                 <section>
                     <h2>Improvements so far</h2>
-                    <ul>
-                        <li class="fragment">XAPI disaggregation: rrdd, networkd and xenopsd</li>
-                        <li class="fragment">Watch xenstore instead of polling</li>
-                    </ul>
+                    <p class="fragment">Data collection caused laggy API response from XAPI</p>
+                    <p class="fragment">-&gt; XAPI disaggregation: rrdd, networkd and xenopsd</p>
+                </section>
+
+                <section>
+                    <h2>Improvements so far</h2>
+                    <p class="fragment">High xenstore load reduced bootstorm performance</p>
+                    <p class="fragment">-&gt; Watch xenstore instead of polling</p>
                 </section>
 
                 <section>
                     <h2>What next?</h2>
                     <ul>
                         <li class="fragment">Take xenstore out of the data path</li>
-                        <li class="fragment">Create a generic API</li>
+                        <li class="fragment">Create a generic API for:
+                            <ul>
+                                <li>Driver domain monitoring</li>
+                                <li>Application monitoring</li>
+                                <li>...</li>
+                            </ul>
+                        </li>
                     </ul>
                 </section>
 
@@ -80,7 +91,7 @@
 
                 <section>
                     <h2>rrdd plugins - protocol v1</h2>
-                    <pre><code style="font-size:28px">
+                    <pre><code style="font-size:32px">
 header                          10 bytes
 data length (ASCII)             8  bytes
 md5sum (ASCII)                  32 bytes
@@ -91,9 +102,9 @@ json data inc. timestamp        ?  bytes
                 <section>
                     <h2>rrdd plugins - protocol v1</h2>
                     <pre><code>
-DATASOURCES
-00000a79
-6cc0472a94896d245dcea04a37c26474
+DATASOURCES                                              <- header
+00000a79                                                 <- data length
+6cc0472a94896d245dcea04a37c26474                         <- data md5sum
 {
   "timestamp": 1407715758,
   "datasources": {
@@ -122,7 +133,7 @@ DATASOURCES
 
                 <section>
                     <h2>rrdd plugins - protocol v2</h2>
-                    <pre><code style="font-size:28px">
+                    <pre><code style="font-size:32px">
 header                          10    bytes
 data crc32                      4     bytes
 metadata crc32                  4     bytes
@@ -131,6 +142,74 @@ timestamp (int64)               8     bytes
 datasource values               n * 8 bytes
 metadata length (int32)         4     bytes
 json metadata                   ?     bytes
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - protocol v2</h2>
+                    <pre><code style="font-size:32px"><span style="color: #ff0000">
+header                          10    bytes
+data crc32                      4     bytes
+metadata crc32                  4     bytes
+datasource count (int32)        4     bytes
+timestamp (int64)               8     bytes
+datasource values               n * 8 bytes</span>
+metadata length (int32)         4     bytes
+json metadata                   ?     bytes
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - protocol v2</h2>
+                    <pre><code>
+DATASOURCES                                              <- header
+....                                                     <- data CRC
+....                                                     <- metadata CRC
+....                                                     <- datasource count
+........                                                 <- timestamp
+........                                                 <- datasource value
+....                                                     <- metadata length
+{
+  "timestamp": 1407715758,
+  "datasources": {
+    "io_throughput_read_9d0e83ec": {
+      "description": "Data read from the SR, in MiB/s",
+      "owner": "host",
+      "value_type": "float",
+      "type": "absolute_to_rate",
+      "units": "MiB/s",
+      "min": "0.00",
+      "max": "inf"
+    }
+  }
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>rrdd plugins - protocol v2</h2>
+                    <pre><code><span style="color: #ff0000">
+DATASOURCES                                              <- header
+....                                                     <- data CRC
+....                                                     <- metadata CRC
+....                                                     <- datasource count
+........                                                 <- timestamp
+........                                                 <- datasource value</span>
+....                                                     <- metadata length
+{
+  "timestamp": 1407715758,
+  "datasources": {
+    "io_throughput_read_9d0e83ec": {
+      "description": "Data read from the SR, in MiB/s",
+      "owner": "host",
+      "value_type": "float",
+      "type": "absolute_to_rate",
+      "units": "MiB/s",
+      "min": "0.00",
+      "max": "inf"
+    }
+  }
+}
                     </code></pre>
                 </section>
 
