@@ -38,38 +38,38 @@
                 <section>
                     <h2>Performance data</h2>
                     <ul>
-                        <li class="fragment">Numeric</li>
-                        <li class="fragment">Changes regularly - requires sampling</li>
-                        <li class="fragment">If we sometimes lose a sample - that's OK</li>
+                        <li>Numeric</li>
+                        <li>Changes regularly - requires sampling</li>
+                        <li>If we sometimes lose a sample - that's OK</li>
                     </ul>
                 </section>
 
                 <section>
                     <h2>Interdomain performance data</h2>
                     <ul>
-                        <li class="fragment">Currently one metric per domU: free memory</li>
-                        <li class="fragment">Transmitted via xenstore</li>
-                        <li class="fragment">Even this has been enough to cause performance problems!</li>
+                        <li>Currently one metric per domU: free memory</li>
+                        <li>Transmitted via xenstore</li>
+                        <li>Even this has been enough to cause performance problems!</li>
                     </ul>
                 </section>
 
                 <section>
                     <h2>Improvements so far</h2>
-                    <p class="fragment">Data collection caused laggy API response from XAPI</p>
-                    <p class="fragment">-&gt; XAPI disaggregation: rrdd, networkd and xenopsd</p>
+                    <p>Data collection caused laggy API response from XAPI</p>
+                    <p>-&gt; XAPI disaggregation: rrdd, networkd and xenopsd</p>
                 </section>
 
                 <section>
                     <h2>Improvements so far</h2>
-                    <p class="fragment">High xenstore load reduced bootstorm performance</p>
-                    <p class="fragment">-&gt; Watch xenstore instead of polling</p>
+                    <p>High xenstore load reduced bootstorm performance</p>
+                    <p>-&gt; Watch xenstore instead of polling</p>
                 </section>
 
                 <section>
                     <h2>What next?</h2>
                     <ul>
-                        <li class="fragment">Take xenstore out of the data path</li>
-                        <li class="fragment">Create a generic API for:
+                        <li>Take xenstore out of the data path</li>
+                        <li>Create a generic API for:
                             <ul>
                                 <li>Driver domain monitoring</li>
                                 <li>Application monitoring</li>
