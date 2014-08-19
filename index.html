@@ -124,6 +124,30 @@ DATASOURCES                                              <- header
                 </section>
 
                 <section>
+                    <h2>rrdd plugins - protocol v1</h2>
+                    <pre><code><span style="color: #FF0000">
+DATASOURCES                                              <- header
+00000a79                                                 <- data length
+6cc0472a94896d245dcea04a37c26474                         <- data md5sum</span>
+{
+  <span style="color: #FF0000">"timestamp": 1407715758,</span>
+  "datasources": {
+    "io_throughput_read_9d0e83ec": {
+      "description": "Data read from the SR, in MiB/s",
+      "owner": "host",
+      <span style="color: #FF0000">"value": "0.55",</span>
+      "value_type": "float",
+      "type": "absolute_to_rate",
+      "units": "MiB/s",
+      "min": "0.00",
+      "max": "inf"
+    }
+  }
+}
+                    </code></pre>
+                </section>
+
+                <section>
                     <h2>rrdd plugins - protocol v2</h2>
                     <ul>
                         <li>Separate data from metadata</li>
